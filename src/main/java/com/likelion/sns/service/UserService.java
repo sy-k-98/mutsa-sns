@@ -23,12 +23,10 @@ import java.nio.file.Path;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public void updateProfileImage(Long id, RequestUserLoginDto dto, MultipartFile profileImg) {
-        checkUserToken(dto.getUsername());
+    public void updateProfileImage(Long id, MultipartFile profileImg, String username) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        checkUserMatch(user, dto.getUsername(), dto.getPassword());
+        checkUserMatch(user, username);
 
         String profileDir = String.format("media/%d/", id);
         try {
@@ -40,7 +38,7 @@ public class UserService {
         String originalFilename = profileImg.getOriginalFilename();
         String[] fileNameSplit = originalFilename.split("\\.");
         String extension = fileNameSplit[fileNameSplit.length - 1];
-        String profileFilename = "image." + extension;
+        String profileFilename = "profileImg_" + id + "." +extension;
         String profilePath = profileDir + profileFilename;
 
         try {
@@ -49,18 +47,12 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        user.updateProfileImg(String.format("/static/images/%d/%s", id, profileFilename));
+        user.updateProfileImg(String.format("/static/profile/%d/%s", id, profileFilename));
         userRepository.save(user);
     }
 
-    private void checkUserToken(String username) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.getName().equals(username))
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
-
-    private void checkUserMatch(User user, String username, String password) {
-        if (!user.getUsername().equals(username) || !passwordEncoder.matches(password, user.getPassword()))
+    private void checkUserMatch(User user, String username) {
+        if (!user.getUsername().equals(username))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 

@@ -6,10 +6,9 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Builder
+@Data
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id

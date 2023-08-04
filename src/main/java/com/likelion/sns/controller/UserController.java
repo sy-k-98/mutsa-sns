@@ -4,6 +4,7 @@ import com.likelion.sns.domain.dto.ResponseDto;
 import com.likelion.sns.domain.dto.TokenDto;
 import com.likelion.sns.domain.dto.user.RequestUserLoginDto;
 import com.likelion.sns.domain.dto.user.RequestUserRegisterDto;
+import com.likelion.sns.domain.dto.user.RequestUserUpdateDto;
 import com.likelion.sns.domain.dto.user.ResponseUserDto;
 import com.likelion.sns.domain.entity.User;
 import com.likelion.sns.jwt.CustomUserDetails;
@@ -14,10 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -57,26 +60,10 @@ public class UserController {
         return ResponseEntity.ok(ResponseDto.getMessage("회원가입이 완료되었습니다."));
     }
 
-/*
-    @GetMapping("/me")
-    public ResponseEntity<ResponseDto> myInfo(@RequestBody RequestUserLoginDto dto) {
-        UserDetails userDetails = manager.loadUserByUsername(dto.getUsername());
-        if (!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        }
-
-        User user =
-
-
-    }*/
-
-//    @PatchMapping("{/userId}")
-//    ResponseEntity<ResponseDto> updateProfileImage(@PathVariable Long id, @RequestBody) {
-//        UserDetails userDetails = manager.loadUserByUsername(dto.getUsername());
-//        if (!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword())) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-//        }
-//
-//        User user = userService.updateProfileImage(userDetails.);
-//    }
+    @PutMapping("/{userId}/profile")
+    ResponseEntity<ResponseDto> updateProfileImage(@PathVariable("userId") Long id, @RequestParam("image") MultipartFile profileImg, Authentication authentication) {
+        String username = authentication.getName();
+        userService.updateProfileImage(id, profileImg, username);
+        return ResponseEntity.ok(ResponseDto.getMessage("프로필 이미지 등록이 완료되었습니다."));
+    }
 }

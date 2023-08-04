@@ -22,6 +22,9 @@ public class CustomUserDetails implements UserDetails {
     private String password;
 
     @Getter
+    private String profileImg;
+
+    @Getter
     private String email;
 
     @Getter
@@ -72,14 +75,15 @@ public class CustomUserDetails implements UserDetails {
                 .build();
     }
 
+
     public User newEntity() {
-        return User.builder()
-                .id(id)
-                .username(username)
-                .password(password)
-                .email(email)
-                .phone(phone)
-                .build();
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setProfileImg(profileImg);
+        user.setEmail(email);
+        user.setPhone(phone);
+        return user;
     }
 
 }

@@ -1,6 +1,5 @@
-package com.likelion.sns.jwt;
+package com.likelion.sns.service;
 
-import com.likelion.sns.domain.dto.user.RequestUserLoginDto;
 import com.likelion.sns.domain.entity.User;
 import com.likelion.sns.jwt.CustomUserDetails;
 import com.likelion.sns.repository.UserRepository;
