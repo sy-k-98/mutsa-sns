@@ -4,6 +4,8 @@ import com.likelion.sns.jwt.CustomUserDetails;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Builder
 @Entity
@@ -25,6 +27,9 @@ public class User {
     private String email;
 
     private String phone;
+
+    @OneToMany(mappedBy = "user")
+    private List<Article> articles;
 
     public void updatePassword(String password) {
         this.password = password;
