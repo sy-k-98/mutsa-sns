@@ -4,9 +4,11 @@ import com.likelion.sns.domain.dto.ResponseDto;
 import com.likelion.sns.domain.dto.TokenDto;
 import com.likelion.sns.domain.dto.user.RequestUserLoginDto;
 import com.likelion.sns.domain.dto.user.RequestUserRegisterDto;
+import com.likelion.sns.domain.dto.user.ResponseUserInfoDto;
 import com.likelion.sns.jwt.CustomUserDetails;
 import com.likelion.sns.jwt.JwtTokenUtils;
 import com.likelion.sns.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -57,9 +59,14 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    ResponseEntity<ResponseDto> updateProfileImage(@RequestParam("image") MultipartFile profileImg, Authentication authentication) {
+    public ResponseEntity<ResponseDto> updateProfileImage(@RequestParam("image") MultipartFile profileImg, Authentication authentication) {
         String username = authentication.getName();
         userService.updateProfileImage(profileImg, username);
         return ResponseEntity.ok(ResponseDto.getMessage("프로필 이미지 등록이 완료되었습니다."));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<ResponseUserInfoDto> getUser(@RequestParam("userId") Long userId) {
+        return ResponseEntity.ok(userService.getUserInfo(userId));
     }
 }

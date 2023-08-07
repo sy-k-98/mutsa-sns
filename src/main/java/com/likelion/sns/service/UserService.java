@@ -1,6 +1,7 @@
 package com.likelion.sns.service;
 
 import com.likelion.sns.domain.dto.user.RequestUserLoginDto;
+import com.likelion.sns.domain.dto.user.ResponseUserInfoDto;
 import com.likelion.sns.domain.entity.User;
 import com.likelion.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,11 @@ public class UserService {
 
         user.updateProfileImg(String.format("/static/profile/%d/%s", user.getId(), profileFilename));
         userRepository.save(user);
+    }
+
+    public ResponseUserInfoDto getUserInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return ResponseUserInfoDto.fromEntity(user);
     }
 
     private void checkUserMatch(User user, String username) {
