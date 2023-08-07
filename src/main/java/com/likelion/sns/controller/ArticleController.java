@@ -18,14 +18,13 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("feeds")
 public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/users/{userId}/articles")
-    ResponseEntity<ResponseDto> create(@PathVariable("userId") Long userId,
-                                       @RequestPart RequestArticleDto dto,
+    @PostMapping
+    ResponseEntity<ResponseDto> create(@RequestPart RequestArticleDto dto,
                                        @RequestPart(required = false) List<MultipartFile> images,
                                        Authentication authentication) throws Exception {
         String username = authentication.getName();
@@ -34,23 +33,21 @@ public class ArticleController {
     }
 
     // 목록 조회
-    @GetMapping("/feed")
-    public ResponseEntity<List<ResponseArticleListDto>> readAll(String username) {
+    @GetMapping
+    public ResponseEntity<List<ResponseArticleListDto>> readAll(@RequestParam String username) {
         return ResponseEntity.ok(articleService.readArticleAll(username));
     }
 
     // 단일 조회
-    @GetMapping("/users/{userId}/articles/{articleId}")
-    public ResponseEntity<ResponseArticleDto> read(@PathVariable("userId") Long userId,
-                                                   @PathVariable("articleId") Long articleId,
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ResponseArticleDto> read(@PathVariable("articleId") Long articleId,
                                                    Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(articleService.readArticle(articleId, username));
     }
 
-    @PutMapping("/users/{userId}/articles/{articleId}")
-    public ResponseEntity<ResponseDto> update(@PathVariable("userId") Long userId,
-                                              @PathVariable("articleId") Long articleId,
+    @PutMapping("/{articleId}")
+    public ResponseEntity<ResponseDto> update(@PathVariable("articleId") Long articleId,
                                               @RequestPart RequestArticleDto dto,
                                               @RequestPart(required = false) List<MultipartFile> images,
                                               Authentication authentication) throws Exception {
@@ -59,7 +56,7 @@ public class ArticleController {
         return ResponseEntity.ok(ResponseDto.getMessage("피드 수정이 완료되었습니다."));
     }
 
-    @DeleteMapping("/users/{userId}/articles/{articleId}")
+    @DeleteMapping("/{articleId}")
     public ResponseEntity<ResponseDto> delete(@PathVariable("articleId") Long id, Authentication authentication) {
         String username = authentication.getName();
         articleService.deleteArticle(id, username);

@@ -24,7 +24,7 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/login", "/users/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/feed").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/feeds").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
