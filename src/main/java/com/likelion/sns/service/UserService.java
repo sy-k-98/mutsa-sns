@@ -24,11 +24,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void updateProfileImage(Long id, MultipartFile profileImg, String username) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public void updateProfileImage(MultipartFile profileImg, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         checkUserMatch(user, username);
 
-        String profileDir = String.format("media/%d/", id);
+        String profileDir = String.format("media/%d/", user.getId());
         try {
             Files.createDirectories(Path.of(profileDir));
         } catch (IOException e) {
@@ -38,7 +38,7 @@ public class UserService {
         String originalFilename = profileImg.getOriginalFilename();
         String[] fileNameSplit = originalFilename.split("\\.");
         String extension = fileNameSplit[fileNameSplit.length - 1];
-        String profileFilename = "profileImg_" + id + "." +extension;
+        String profileFilename = "profileImg_" + user.getId() + "." +extension;
         String profilePath = profileDir + profileFilename;
 
         try {
@@ -47,7 +47,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        user.updateProfileImg(String.format("/static/profile/%d/%s", id, profileFilename));
+        user.updateProfileImg(String.format("/static/profile/%d/%s", user.getId(), profileFilename));
         userRepository.save(user);
     }
 

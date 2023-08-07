@@ -56,10 +56,10 @@ public class UserController {
         return ResponseEntity.ok(ResponseDto.getMessage("회원가입이 완료되었습니다."));
     }
 
-    @PutMapping("/{userId}/profile")
-    ResponseEntity<ResponseDto> updateProfileImage(@PathVariable("userId") Long id, @RequestParam("image") MultipartFile profileImg, Authentication authentication) {
+    @PutMapping("/profile")
+    ResponseEntity<ResponseDto> updateProfileImage(@RequestParam("image") MultipartFile profileImg, Authentication authentication) {
         String username = authentication.getName();
-        userService.updateProfileImage(id, profileImg, username);
+        userService.updateProfileImage(profileImg, username);
         return ResponseEntity.ok(ResponseDto.getMessage("프로필 이미지 등록이 완료되었습니다."));
     }
 }
