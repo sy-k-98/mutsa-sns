@@ -22,6 +22,7 @@ public class ResponseArticleDto {
     private String content;
     private List<String> articleImages;
     private List<ResponseCommentDto> commentList;
+    private Integer heartCounts;
 
     public static ResponseArticleDto fromEntity(Article article) {
         List<String> pathList = new ArrayList<>();
@@ -42,6 +43,7 @@ public class ResponseArticleDto {
                 .content(article.getContent())
                 .articleImages(pathList)
                 .commentList(comments)
+                .heartCounts(article.getHearts().size())
                 .build();
     }
 }

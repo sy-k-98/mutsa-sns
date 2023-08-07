@@ -38,6 +38,9 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private List<ArticleHeart> hearts = new ArrayList<>();
+
     @Builder
     public Article(User user, String title, String content, String thumbnail) {
         this.user = user;

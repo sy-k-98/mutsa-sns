@@ -4,11 +4,15 @@ import com.likelion.sns.domain.dto.ResponseDto;
 import com.likelion.sns.domain.dto.article.RequestArticleDto;
 import com.likelion.sns.domain.dto.article.ResponseArticleDto;
 import com.likelion.sns.domain.dto.article.ResponseArticleListDto;
+import com.likelion.sns.domain.entity.Article;
+import com.likelion.sns.domain.entity.ArticleHeart;
+import com.likelion.sns.service.ArticleHeartService;
 import com.likelion.sns.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +26,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ArticleHeartService articleHeartService;
 
     @PostMapping
     ResponseEntity<ResponseDto> create(@RequestPart RequestArticleDto dto,
@@ -61,7 +66,13 @@ public class ArticleController {
         String username = authentication.getName();
         articleService.deleteArticle(id, username);
         return ResponseEntity.ok(ResponseDto.getMessage("피드 삭제가 완료되었습니다."));
+    }
 
+    @PostMapping("/{articleId}/hearts")
+    public ResponseEntity<ResponseDto> heart(@PathVariable("articleId") Long articleId,
+                                             Authentication authentication) {
+        String username = authentication.getName();
+        return ResponseEntity.ok(ResponseDto.getMessage(articleHeartService.clickHeart(articleId, username)));
     }
 
 }
