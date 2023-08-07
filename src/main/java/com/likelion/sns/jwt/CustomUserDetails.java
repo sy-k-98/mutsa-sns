@@ -77,13 +77,14 @@ public class CustomUserDetails implements UserDetails {
 
 
     public User newEntity() {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setProfileImg(profileImg);
-        user.setEmail(email);
-        user.setPhone(phone);
-        return user;
+        return User.builder()
+                .username(username)
+                .password(password)
+                .profileImg(profileImg)
+                .email(email)
+                .phone(phone)
+                .build();
+
     }
 
 }
