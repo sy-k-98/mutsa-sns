@@ -35,6 +35,8 @@ public class Article {
             orphanRemoval = true)
     private List<ArticleImage> articleImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Article(User user, String title, String content, String thumbnail) {
@@ -61,6 +63,13 @@ public class Article {
         this.articleImages.add(articleImage);
         if (articleImage.getArticle() != this) {
             articleImage.setArticle(this);
+        }
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        if (comment.getArticle() != this) {
+            comment.setArticle(this);
         }
     }
 }
