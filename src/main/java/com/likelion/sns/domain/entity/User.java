@@ -31,6 +31,31 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_follows",
+            joinColumns = @JoinColumn(name = "follower"),
+            inverseJoinColumns = @JoinColumn(name = "following")
+    )
+    private List<User> following;
+
+    @ManyToMany(mappedBy = "following")
+    private List<User> followers;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends",
+            joinColumns = @JoinColumn(name = "to_user"),
+            inverseJoinColumns = @JoinColumn(name = "from_user")
+    )
+    private List<User> fromUser;
+
+    @ManyToMany(mappedBy = "fromUser")
+    private List<User> toUser;
+
     public void updatePassword(String password) {
         this.password = password;
     }

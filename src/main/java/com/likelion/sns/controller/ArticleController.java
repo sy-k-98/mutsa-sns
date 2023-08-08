@@ -75,4 +75,17 @@ public class ArticleController {
         return ResponseEntity.ok(ResponseDto.getMessage(articleHeartService.clickHeart(articleId, username)));
     }
 
+    @GetMapping("/followings")
+    public ResponseEntity<List<ResponseArticleListDto>> readFollowings(Authentication authentication) {
+        String username = authentication.getName();
+        return ResponseEntity.ok(articleService.readFollowingArticleAll(username));
+    }
+
+    @GetMapping("/friends")
+    public ResponseEntity<List<ResponseArticleListDto>> readFriends(Authentication authentication) {
+        String username = authentication.getName();
+        return ResponseEntity.ok(articleService.readFriendArticleAll(username));
+    }
+
+
 }

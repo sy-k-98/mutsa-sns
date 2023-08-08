@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseArticleListDto {
+    private Long id;
     private String username;
     private String title;
     private String content;
@@ -22,6 +23,7 @@ public class ResponseArticleListDto {
 
     public static ResponseArticleListDto fromEntity(Article article) {
         return ResponseArticleListDto.builder()
+                .id(article.getId())
                 .username(article.getUser().getUsername())
                 .title(article.getTitle())
                 .content(article.getContent())

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -58,15 +60,11 @@ public class UserController {
         return ResponseEntity.ok(ResponseDto.getMessage("회원가입이 완료되었습니다."));
     }
 
+    // 내 프로필 이미지 등록
     @PutMapping("/profile")
     public ResponseEntity<ResponseDto> updateProfileImage(@RequestParam("image") MultipartFile profileImg, Authentication authentication) {
         String username = authentication.getName();
         userService.updateProfileImage(profileImg, username);
         return ResponseEntity.ok(ResponseDto.getMessage("프로필 이미지 등록이 완료되었습니다."));
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<ResponseUserInfoDto> getUser(@RequestParam("userId") Long userId) {
-        return ResponseEntity.ok(userService.getUserInfo(userId));
     }
 }

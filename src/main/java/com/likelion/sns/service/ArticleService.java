@@ -17,9 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -82,7 +80,7 @@ public class ArticleService {
                     // 새로 등록할 이미지 리스트에 이름이 없다면 삭제
                     if (!multipartFiles.contains(name))
                         articleImageRepository.delete(image);
-                    // 아니면 등록
+                        // 아니면 등록
                     else
                         nameList.add(name);
                 }
@@ -130,6 +128,31 @@ public class ArticleService {
         checkUserMatch(article.getUser(), user.getUsername());
         article.setDeleteAt();
         articleRepository.save(article);
+    }
+
+    public List<ResponseArticleListDto> readFollowingArticleAll(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        checkUserMatch(user, username);
+        List<ResponseArticleListDto> articles = new ArrayList<>();
+        for (User following : user.getFromUser()) {
+            for (Article article : following.getArticles())
+                articles.add(ResponseArticleListDto.fromEntity(article));
+        }
+        return articles;
+    }
+
+    public List<ResponseArticleListDto> readFriendArticleAll(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        checkUserMatch(user, username);
+        List<ResponseArticleListDto> articles = new ArrayList<>();
+        for (User fromUser : user.getFromUser()) {
+            if (fromUser.getFromUser().contains(user)) {
+                for (Article article : fromUser.getArticles())
+                    articles.add(ResponseArticleListDto.fromEntity(article));
+            }
+        }
+
+        return articles;
     }
 
     private void checkUserMatch(User user, String username) {
