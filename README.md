@@ -17,14 +17,14 @@
 <details>
 <summary> ✨ 작동 확인 전 세팅 ✨</summary>
 1️⃣ 아래 PostMan Document에서 "Run in PostMan"을 누르고 Import할 Workspace를 선택한다.
-<img src="img/포스트맨환경설정3.png">
+  <img src="img/sns환경설정.png">
 
-2️⃣ 우측 위 Environments를 선택하는 부분에서 "New Environment"를 선택한다.
-<img src="img/포스트맨환경설정4.png">
+2️⃣ 우측 위 Environments를 선택하는 부분에서 "Market Environment"를 선택한다.
+  <img src="img/environment등록.png">
 
 3️⃣ Request마다 토큰 설정을 해준다.  
 ▶️ 작동 시, user1 / user2 / user3 입력하는 Request에는 토큰 설정을 아래와 같이 한다.
-<img src="img/토큰등록_dev.png">
+  <img src="img/토큰설정.png">
 
 </details>
 
