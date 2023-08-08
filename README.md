@@ -28,7 +28,7 @@
 
 </details>
 
-[PostMan Document](https://documenter.getpostman.com/view/22906513/2s9XxzvYvX)
+[PostMan Document](https://documenter.getpostman.com/view/22906513/2s9XxzvZ5Q)
 
 [PostMan Json](https://github.com/likelion-backend-5th/Project_2_KimSoyoung/blob/main/SNS.postman_collection.json)
 
